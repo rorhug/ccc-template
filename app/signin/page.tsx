@@ -54,12 +54,16 @@ export default function SignIn() {
           const formData = new FormData(e.target as HTMLFormElement);
           formData.set("flow", flow);
           void signIn("password", formData)
-            .catch((error) => {
-              setError(error.message);
-              setLoading(false);
-            })
             .then(() => {
               router.push("/");
+            })
+            .catch(() => {
+              const msg =
+                flow === "signIn"
+                  ? "Invalid email or password. If you don't have an account, click Sign up."
+                  : "Could not create account. Please try again.";
+              setError(msg);
+              setLoading(false);
             });
         }}
       >
