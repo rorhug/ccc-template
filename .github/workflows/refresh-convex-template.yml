@@ -48,9 +48,10 @@ jobs:
 
       - name: Restore root files
         run: |
-          curl -fsSL https://raw.githubusercontent.com/rorhug/create-convex-cloud/main/generateJwtKeys.mjs -o generateJwtKeys.mjs
+          curl -fsSL https://raw.githubusercontent.com/rorhug/create-convex-cloud/main/generate-jwt-keys.mjs -o generate-jwt-keys.mjs
           curl -fsSL https://raw.githubusercontent.com/rorhug/create-convex-cloud/main/set-convex-env.sh -o set-convex-env.sh
           curl -fsSL https://raw.githubusercontent.com/rorhug/create-convex-cloud/main/vercel.json -o vercel.json
+          curl -fsSL https://raw.githubusercontent.com/rorhug/create-convex-cloud/main/wipe-convex.mjs -o wipe-convex.mjs
           chmod +x set-convex-env.sh
 
       - name: Commit changes if needed
