@@ -16,26 +16,20 @@ jobs:
 
     steps:
       - name: Check out main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 0
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Recreate app from Convex starter
+      - name: Fetch Convex starter template
         shell: bash
-        env:
-          CI: "1"
         run: |
           tmpdir="$(mktemp -d)"
-          npm create convex@latest "$tmpdir" -- --verbose -t nextjs-convexauth
+          git clone --depth=1 --filter=blob:none --sparse https://github.com/get-convex/templates.git "$tmpdir"
+          git -C "$tmpdir" sparse-checkout set template-nextjs-convexauth
 
-          if [ ! -f "$tmpdir/.gitignore" ]; then
-            echo "Expected the generated template to include a root .gitignore, but none was found."
+          if [ ! -f "$tmpdir/template-nextjs-convexauth/.gitignore" ]; then
+            echo "Expected the template to include a root .gitignore, but none was found."
             exit 1
           fi
 
@@ -49,7 +43,7 @@ jobs:
             rm -rf -- "$path"
           done
 
-          cp -R "$tmpdir"/. .
+          cp -R "$tmpdir"/template-nextjs-convexauth/. .
           rm -rf "$tmpdir"
 
       - name: Restore root files
