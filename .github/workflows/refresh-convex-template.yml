@@ -2,6 +2,8 @@ name: Refresh Convex Template
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
 
 permissions:
   contents: write
@@ -46,6 +48,24 @@ jobs:
           cp -R "$tmpdir"/template-nextjs-convexauth/. .
           rm -rf "$tmpdir"
 
+      - name: Prepend Create Convex Cloud README note
+        shell: bash
+        run: |
+          tmpfile="$(mktemp)"
+          {
+            cat <<'EOF'
+            > This is the template for Create Convex Cloud: https://www.createconvex.cloud
+            >
+            > CCC git repo: https://github.com/rorhug/create-convex-cloud
+            > CCC template repo: https://github.com/rorhug/ccc-template
+            > Original template repo where we sync from: https://github.com/get-convex/templates/
+            >
+
+            EOF
+            cat README.md
+          } > "$tmpfile"
+          mv "$tmpfile" README.md
+
       - name: Restore root files
         run: |
           curl -fsSL https://raw.githubusercontent.com/rorhug/create-convex-cloud/main/generate-jwt-keys.mjs -o generate-jwt-keys.mjs
@@ -53,6 +73,14 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/rorhug/create-convex-cloud/main/vercel.json -o vercel.json
           curl -fsSL https://raw.githubusercontent.com/rorhug/create-convex-cloud/main/wipe-convex.mjs -o wipe-convex.mjs
           chmod +x set-convex-env.sh
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Install Convex AI files
+        run: npx convex ai-files install
 
       - name: Commit changes if needed
         shell: bash
