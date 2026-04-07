@@ -42,7 +42,7 @@ jobs:
       - name: Recreate app from Convex starter
         env:
           CI: "1"
-        run: npm create convex@latest -- -t nextjs-convexauth
+        run: npm create convex@latest . -- --verbose -t nextjs-convexauth
 
       - name: Restore root files
         run: |
