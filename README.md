@@ -1,3 +1,10 @@
+> This is the template for Create Convex Cloud: https://www.createconvex.cloud
+>
+> CCC git repo: https://github.com/rorhug/create-convex-cloud
+> CCC template repo: https://github.com/rorhug/ccc-template
+> Original template repo where we sync from: https://github.com/get-convex/templates/
+>
+
 # Welcome to your Convex + Next.js + Convex Auth app
 
 This is a [Convex](https://convex.dev/) project created with [`npm create convex`](https://www.npmjs.com/package/create-convex).
