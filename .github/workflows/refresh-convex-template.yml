@@ -53,15 +53,13 @@ jobs:
         run: |
           tmpfile="$(mktemp)"
           {
-            cat <<'EOF'
-            > This is the template for Create Convex Cloud: https://www.createconvex.cloud
-            >
-            > CCC git repo: https://github.com/rorhug/create-convex-cloud
-            > CCC template repo: https://github.com/rorhug/ccc-template
-            > Original template repo where we sync from: https://github.com/get-convex/templates/
-            >
-
-            EOF
+            printf '%s\n' '> This is the template for Create Convex Cloud: https://www.createconvex.cloud'
+            printf '%s\n' '>'
+            printf '%s\n' '> CCC git repo: https://github.com/rorhug/create-convex-cloud'
+            printf '%s\n' '> CCC template repo: https://github.com/rorhug/ccc-template'
+            printf '%s\n' '> Original template repo where we sync from: https://github.com/get-convex/templates/'
+            printf '%s\n' '>'
+            printf '\n'
             cat README.md
           } > "$tmpfile"
           mv "$tmpfile" README.md
