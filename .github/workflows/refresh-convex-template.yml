@@ -26,9 +26,19 @@ jobs:
         with:
           node-version: 22
 
-      - name: Remove repo contents except .git and .github
+      - name: Recreate app from Convex starter
         shell: bash
+        env:
+          CI: "1"
         run: |
+          tmpdir="$(mktemp -d)"
+          npm create convex@latest "$tmpdir" -- --verbose -t nextjs-convexauth
+
+          if [ ! -f "$tmpdir/.gitignore" ]; then
+            echo "Expected the generated template to include a root .gitignore, but none was found."
+            exit 1
+          fi
+
           shopt -s dotglob nullglob
           for path in *; do
             case "$path" in
@@ -39,10 +49,8 @@ jobs:
             rm -rf -- "$path"
           done
 
-      - name: Recreate app from Convex starter
-        env:
-          CI: "1"
-        run: npm create convex@latest . -- --verbose -t nextjs-convexauth
+          cp -R "$tmpdir"/. .
+          rm -rf "$tmpdir"
 
       - name: Restore root files
         run: |
